@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Patients{% endblock %}
+{% block content %}
+<h1>Patients</h1>
+
+<form method="GET" action="{{ url_for('patient_list') }}" class="search-bar">
+    <input type="text" name="q" placeholder="Search by name or patient code..." value="{{ search }}">
+    <button type="submit" class="btn btn-secondary">Search</button>
+</form>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Patient Code</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Gender</th>
+            <th>Contact</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for patient in patients %}
+        <tr onclick="window.location='{{ url_for('patient_profile', patient_code=patient['patient_code']) }}'">
+            <td><span class="code-badge">{{ patient['patient_code'] }}</span></td>
+            <td>{{ patient['name'] }}</td>
+            <td>{{ patient['age'] or '-' }}</td>
+            <td>{{ patient['gender'] or '-' }}</td>
+            <td>{{ patient['contact'] or '-' }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5" class="empty-state">No patients found. Add your first patient to get started.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

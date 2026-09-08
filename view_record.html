@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Case Record{% endblock %}
+
+{% block content %}
+<h1>Digital Medical Report</h1>
+<p class="page-subtitle">{{ patient['name'] }} ({{ patient['patient_code'] }}) &middot; Visit: {{ record['visit_date'] }}
+{% if record['doctor_name'] %} &middot; Seen by: {{ record['doctor_name'] }}{% endif %}</p>
+
+<div class="report-card">
+    <div class="report-section">
+        <h3>Chief Complaints</h3>
+        <p>{{ record['chief_complaints'] or '-' }}</p>
+    </div>
+    <div class="report-section">
+        <h3>Medical History</h3>
+        <p><strong>History of illness:</strong> {{ record['history_illness'] or '-' }}</p>
+        <p><strong>Family history:</strong> {{ record['family_history'] or '-' }}</p>
+    </div>
+    <div class="report-section">
+        <h3>Medicines</h3>
+        <p><strong>Current:</strong> {{ record['current_medicines'] or '-' }}</p>
+        <p><strong>Previous:</strong> {{ record['previous_medicines'] or '-' }}</p>
+    </div>
+    <div class="report-section">
+        <h3>Prakriti / Dosha Assessment</h3>
+        <p>{{ record['dosha_assessment'] or '-' }}</p>
+    </div>
+    <div class="report-section">
+        <h3>Nidan Panchak</h3>
+        <p><strong>Cause:</strong> {{ record['nidan_cause'] or '-' }}</p>
+        <p><strong>Early signs:</strong> {{ record['nidan_early_signs'] or '-' }}</p>
+        <p><strong>Symptoms:</strong> {{ record['nidan_symptoms'] or '-' }}</p>
+        <p><strong>Examination:</strong> {{ record['nidan_examination'] or '-' }}</p>
+    </div>
+    <div class="report-section">
+        <h3>Diagnosis</h3>
+        <p>{{ record['diagnosis'] or '-' }}</p>
+        <p>{{ record['additional_notes'] or '' }}</p>
+    </div>
+</div>
+
+{% if patient_side %}
+<a href="{{ url_for('patient_home', patient_code=patient['patient_code']) }}" class="btn btn-secondary">
+    Back to My Records
+</a>
+{% else %}
+<a href="{{ url_for('patient_profile', patient_code=patient['patient_code']) }}" class="btn btn-secondary">
+    Back to Patient Profile
+</a>
+{% endif %}
+{% endblock %}

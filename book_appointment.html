@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Request Visit{% endblock %}
+{% block content %}
+
+<h1 style="font-size:20px; color:var(--navy);">Request a Visit</h1>
+<p class="page-subtitle">With {{ doctor['name'] }}</p>
+
+<form method="POST" class="form-card">
+    <div class="form-group" style="margin-bottom:14px;">
+        <label>Preferred Date</label>
+        <input type="date" name="preferred_date" required>
+    </div>
+    <div class="form-group full-width" style="margin-bottom:16px;">
+        <label>Reason for Visit</label>
+        <textarea name="reason" rows="4" placeholder="Briefly describe why you'd like to visit" required></textarea>
+    </div>
+    <div style="background:#F4F7F6; border-radius:8px; padding:12px 14px; font-size:12.5px; color:#666; margin-bottom:16px;">
+        💡 No online payment needed — consultation fees are paid directly at the clinic during your visit.
+    </div>
+    <button type="submit" class="btn btn-primary" style="width:100%;">Send Visit Request</button>
+</form>
+
+<a href="{{ url_for('doctors_list', patient_code=patient['patient_code']) }}" class="btn btn-secondary" style="margin-top:12px; display:inline-block;">
+    Back to Doctors
+</a>
+{% endblock %}

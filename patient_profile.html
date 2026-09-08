@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}{{ patient['name'] }} - Profile{% endblock %}
+
+{% block content %}
+<div class="profile-header">
+    <div>
+        <h1>{{ patient['name'] }}</h1>
+        <span class="code-badge large">{{ patient['patient_code'] }}</span>
+    </div>
+    <div id="qrcode-box" class="qr-box">
+        <div id="qrcode"></div>
+        <p class="qr-caption">Scan to identify patient</p>
+    </div>
+</div>
+
+<div class="details-card">
+    <div><strong>Age:</strong> {{ patient['age'] or '-' }}</div>
+    <div><strong>Gender:</strong> {{ patient['gender'] or '-' }}</div>
+    <div><strong>Contact:</strong> {{ patient['contact'] or '-' }}</div>
+    <div><strong>Address:</strong> {{ patient['address'] or '-' }}</div>
+    <div><strong>Emergency Contact:</strong> {{ patient['emergency_contact'] or '-' }}</div>
+</div>
+
+{% if pending_edit %}
+<div class="flash" style="background:#FFF7E6; border-color:#E0A82E; color:#8a6416;">
+    An edit request is pending patient approval — they haven't responded yet.
+</div>
+{% else %}
+<a href="{{ url_for('request_edit', patient_code=patient['patient_code']) }}" class="btn btn-secondary" style="margin-bottom:14px; display:inline-block;">
+    ✏️ Request Info Edit
+</a>
+{% endif %}
+
+{% if pre_notes %}
+<div class="queue-card" style="border-left:4px solid var(--teal);">
+    <div class="queue-header"><h3>Pre-Consultation Notes from Patient</h3></div>
+    {% for note in pre_notes %}
+    <div style="padding:8px 0; border-bottom:1px solid var(--border); font-size:13px;">
+        <div style="color:#888; font-size:11.5px; margin-bottom:2px;">{{ note['created_at'] }}</div>
+        {{ note['notes'] }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<a href="{{ url_for('new_case', patient_code=patient['patient_code']) }}" class="btn btn-primary">
+    + New Case-Taking Record
+</a>
+
+<h2 class="section-title">Visit History</h2>
+
+{% if records %}
+<div class="record-list">
+    {% for record in records %}
+    <a href="{{ url_for('view_record', record_id=record['id']) }}" class="record-item">
+        <div>
+            <div class="record-date">{{ record['visit_date'] }}</div>
+            <div class="record-diagnosis">{{ record['diagnosis'] or 'No diagnosis noted' }}</div>
+        </div>
+        <div class="record-date">{{ record['doctor_name'] or '' }}</div>
+    </a>
+    {% endfor %}
+</div>
+{% else %}
+<p class="empty-state">No case records yet for this patient.</p>
+{% endif %}
+
+<!-- Free QR code library from CDN - generates QR client-side, no server package needed -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+    new QRCode(document.getElementById("qrcode"), {
+        text: "{{ patient['patient_code'] }}",
+        width: 110,
+        height: 110,
+    });
+</script>
+{% endblock %}

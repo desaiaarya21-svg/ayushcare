@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Doctor Registration{% endblock %}
+{% block content %}
+<div class="login-wrap">
+    <div class="login-card">
+        <div class="login-logo">👨‍⚕️</div>
+        <h1>Doctor Registration</h1>
+        <p class="subtitle">Set up your own name and PIN</p>
+
+        {% if error %}
+            <div class="error-box">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST" action="{{ url_for('doctor_register') }}">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" name="name" placeholder="e.g. Dr. Priya Nair"
+                   style="text-align:left; font-size:15px; letter-spacing:normal; padding:10px 12px;" required>
+
+            <label for="pin" style="margin-top:12px;">Choose a 4-Digit PIN</label>
+            <input type="password" id="pin" name="pin" maxlength="4" inputmode="numeric" pattern="[0-9]*" required>
+
+            <label for="confirm_pin">Confirm PIN</label>
+            <input type="password" id="confirm_pin" name="confirm_pin" maxlength="4" inputmode="numeric" pattern="[0-9]*" required>
+
+            <button type="submit">Register</button>
+        </form>
+        <p class="hint">Already registered? <a href="{{ url_for('login') }}">Login here</a></p>
+    </div>
+</div>
+{% endblock %}

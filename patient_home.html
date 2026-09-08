@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block title %}My Records{% endblock %}
+
+{% block content %}
+
+<div class="welcome-banner">
+    <div class="greeting-label">Welcome back,</div>
+    <h1>{{ patient['name'] }}</h1>
+    <div class="sub-line">Patient Code: <strong>{{ patient['patient_code'] }}</strong></div>
+</div>
+
+{% if pending_edit %}
+<div class="queue-card" style="border-left:4px solid #E0A82E;">
+    <div class="queue-header"><h3>Update Request from Your Doctor</h3></div>
+    <p style="font-size:13.5px; color:#555; margin-bottom:10px;">
+        {{ pending_edit['requested_by'] }} wants to update your profile:
+    </p>
+    <ul style="font-size:13px; color:#555; margin:0 0 14px 18px; padding:0;">
+        {% if pending_edit['new_name'] %}<li>Name &rarr; {{ pending_edit['new_name'] }}</li>{% endif %}
+        {% if pending_edit['new_age'] %}<li>Age &rarr; {{ pending_edit['new_age'] }}</li>{% endif %}
+        {% if pending_edit['new_gender'] %}<li>Gender &rarr; {{ pending_edit['new_gender'] }}</li>{% endif %}
+        {% if pending_edit['new_contact'] %}<li>Contact &rarr; {{ pending_edit['new_contact'] }}</li>{% endif %}
+        {% if pending_edit['new_address'] %}<li>Address &rarr; {{ pending_edit['new_address'] }}</li>{% endif %}
+        {% if pending_edit['new_emergency_contact'] %}<li>Emergency Contact &rarr; {{ pending_edit['new_emergency_contact'] }}</li>{% endif %}
+    </ul>
+    <div style="display:flex; gap:10px;">
+        <form method="POST" action="{{ url_for('respond_to_edit', patient_code=patient['patient_code'], edit_id=pending_edit['id'], action='approve') }}">
+            <button type="submit" class="btn btn-primary">Approve</button>
+        </form>
+        <form method="POST" action="{{ url_for('respond_to_edit', patient_code=patient['patient_code'], edit_id=pending_edit['id'], action='reject') }}">
+            <button type="submit" class="btn btn-secondary">Reject</button>
+        </form>
+    </div>
+</div>
+{% endif %}
+
+<div class="quick-grid">
+    <a href="{{ url_for('doctors_list', patient_code=patient['patient_code']) }}" class="quick-tile tile-blue">
+        <div class="tile-icon">📅</div>
+        <div class="tile-title">Book Visit</div>
+        <div class="tile-sub">Request an appointment</div>
+    </a>
+    <div class="quick-tile tile-purple" style="cursor:default;">
+        <div class="tile-icon">📄</div>
+        <div class="tile-title">{{ records|length }} Visit(s)</div>
+        <div class="tile-sub">Recorded so far</div>
+    </div>
+    <a href="{{ url_for('pre_consult', patient_code=patient['patient_code']) }}" class="quick-tile tile-green">
+        <div class="tile-icon">📝</div>
+        <div class="tile-title">Pre-Consultation</div>
+        <div class="tile-sub">Share symptoms before your visit</div>
+    </a>
+    <a href="{{ url_for('patient_settings', patient_code=patient['patient_code']) }}" class="quick-tile tile-pink">
+        <div class="tile-icon">👤</div>
+        <div class="tile-title">My Profile</div>
+        <div class="tile-sub">View your details</div>
+    </a>
+</div>
+
+{% if appointments %}
+<div class="queue-card">
+    <div class="queue-header"><h3>My Appointments</h3></div>
+    {% for appt in appointments %}
+    <div class="queue-row" style="cursor:default;">
+        <div class="queue-avatar">🗓️</div>
+        <div style="flex:1;">
+            <div class="queue-name">{{ appt['doctor_name'] }}</div>
+            <div class="queue-meta">Preferred: {{ appt['preferred_date'] }} &middot; {{ appt['status']|capitalize }}</div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div id="qrcode-box" class="qr-box" style="text-align:center; margin-bottom:18px;">
+    <div id="qrcode"></div>
+    <p class="qr-caption">Show this to your doctor to open your profile</p>
+</div>
+
+<div class="queue-card">
+    <div class="queue-header">
+        <h3>My Visit History</h3>
+    </div>
+
+    {% if records %}
+        {% for record in records %}
+        <a href="{{ url_for('patient_view_record', patient_code=patient['patient_code'], record_id=record['id']) }}" class="queue-row">
+            <div class="queue-avatar">📋</div>
+            <div style="flex:1;">
+                <div class="queue-name">{{ record['diagnosis'] or 'No diagnosis noted' }}</div>
+                <div class="queue-meta">{{ record['visit_date'] }} &middot; {{ record['doctor_name'] or '' }}</div>
+            </div>
+        </a>
+        {% endfor %}
+    {% else %}
+        <p class="empty-state">No visit records yet.</p>
+    {% endif %}
+</div>
+
+<!-- Free QR code library from CDN - generates QR client-side, no server package needed -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+    new QRCode(document.getElementById("qrcode"), {
+        text: "{{ patient['patient_code'] }}",
+        width: 100,
+        height: 100,
+    });
+</script>
+{% endblock %}

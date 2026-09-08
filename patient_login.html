@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Patient Login{% endblock %}
+{% block content %}
+<div class="login-wrap">
+    <div class="login-card">
+        <div class="login-logo">🧑</div>
+        <h1>Patient Access</h1>
+        <p class="subtitle">Enter your Patient Code to view your records</p>
+
+        {% if error %}
+            <div class="error-box">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST" action="{{ url_for('patient_login') }}">
+            <label for="patient_code">Patient Code</label>
+            <input type="text" id="patient_code" name="patient_code" placeholder="e.g. AYU0001"
+                   style="letter-spacing:2px; font-size:18px;" autofocus required>
+
+            <label for="patient_pin" style="margin-top:12px;">PIN (only if you set one)</label>
+            <input type="password" id="patient_pin" name="patient_pin" maxlength="4" inputmode="numeric" pattern="[0-9]*">
+
+            <button type="submit">View My Records</button>
+        </form>
+        <p class="hint">Your Patient Code was given to you at registration,<br>or is on your QR code / profile card.</p>
+        <p class="hint">New here? <a href="{{ url_for('patient_register') }}">Register Now</a></p>
+        <p class="hint"><a href="{{ url_for('index') }}">&larr; Back</a></p>
+    </div>
+</div>
+{% endblock %}

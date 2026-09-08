@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Ayush Case-Taking{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+{% if session.get('logged_in') %}
+<div class="topbar">
+    <div class="brand">🌿 Ayush Care</div>
+    <div style="display:flex; align-items:center;">
+        <div class="avatar">{{ session.get('doctor_name', 'D')[0] }}</div>
+        <a href="{{ url_for('logout') }}" class="logout-link">Logout</a>
+    </div>
+</div>
+{% elif patient_nav_code %}
+<div class="topbar">
+    <div class="brand">🌿 Ayush Care</div>
+    <div style="display:flex; align-items:center;">
+        <div class="avatar">{{ patient_nav_name[0] if patient_nav_name else 'P' }}</div>
+    </div>
+</div>
+{% endif %}
+
+<div class="container">
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="flash">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+</div>
+
+{% if session.get('logged_in') %}
+<div class="bottom-nav">
+    <a href="{{ url_for('dashboard') }}" class="{{ 'active' if request.endpoint == 'dashboard' }}">
+        <span class="nav-icon">🏠</span>Home
+    </a>
+    <a href="{{ url_for('patient_list') }}" class="{{ 'active' if request.endpoint in ['patient_list','patient_profile'] }}">
+        <span class="nav-icon">👥</span>Patients
+    </a>
+    <a href="{{ url_for('new_patient') }}" class="{{ 'active' if request.endpoint == 'new_patient' }}">
+        <span class="nav-icon">➕</span>New Patient
+    </a>
+    <a href="{{ url_for('doctor_settings') }}" class="{{ 'active' if request.endpoint == 'doctor_settings' }}">
+        <span class="nav-icon">⚙️</span>Settings
+    </a>
+</div>
+{% elif patient_nav_code %}
+<div class="bottom-nav">
+    <a href="{{ url_for('patient_home', patient_code=patient_nav_code) }}" class="{{ 'active' if request.endpoint == 'patient_home' }}">
+        <span class="nav-icon">🏠</span>Home
+    </a>
+    <a href="{{ url_for('patient_settings', patient_code=patient_nav_code) }}" class="{{ 'active' if request.endpoint == 'patient_settings' }}">
+        <span class="nav-icon">⚙️</span>Settings
+    </a>
+</div>
+{% endif %}
+
+</body>
+</html>

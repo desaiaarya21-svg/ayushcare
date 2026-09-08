@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}New Case Record{% endblock %}
+
+{% block content %}
+<h1>Case-Taking: {{ patient['name'] }} <span class="code-badge">{{ patient['patient_code'] }}</span></h1>
+
+<form method="POST" class="form-card">
+    <div class="tabs">
+        <button type="button" class="tab-btn active" data-tab="tab1">Chief Complaints</button>
+        <button type="button" class="tab-btn" data-tab="tab2">Medical History</button>
+        <button type="button" class="tab-btn" data-tab="tab3">Medicines</button>
+        <button type="button" class="tab-btn" data-tab="tab4">Prakriti / Dosha</button>
+        <button type="button" class="tab-btn" data-tab="tab5">Nidan Panchak</button>
+        <button type="button" class="tab-btn" data-tab="tab6">Diagnosis</button>
+    </div>
+
+    <div class="tab-content active" id="tab1">
+        <div class="form-group full-width">
+            <label>Chief Complaints (what the patient is here for, since when)</label>
+            <textarea name="chief_complaints" rows="4" placeholder="e.g. Joint pain in knees for 3 weeks, worse in mornings"></textarea>
+        </div>
+    </div>
+
+    <div class="tab-content" id="tab2">
+        <div class="form-group full-width">
+            <label>History of Present Illness</label>
+            <textarea name="history_illness" rows="3"></textarea>
+        </div>
+        <div class="form-group full-width">
+            <label>Family History</label>
+            <textarea name="family_history" rows="3"></textarea>
+        </div>
+    </div>
+
+    <div class="tab-content" id="tab3">
+        <div class="form-group full-width">
+            <label>Current Medicines</label>
+            <textarea name="current_medicines" rows="3" placeholder="Name, dosage, frequency"></textarea>
+        </div>
+        <div class="form-group full-width">
+            <label>Previous Medicines</label>
+            <textarea name="previous_medicines" rows="3"></textarea>
+        </div>
+    </div>
+
+    <div class="tab-content" id="tab4">
+        <div class="form-group full-width">
+            <label>Dosha Assessment</label>
+            <select name="dosha_assessment">
+                <option value="">Select dominant Dosha</option>
+                <option value="Vata">Vata</option>
+                <option value="Pitta">Pitta</option>
+                <option value="Kapha">Kapha</option>
+                <option value="Vata-Pitta">Vata-Pitta</option>
+                <option value="Pitta-Kapha">Pitta-Kapha</option>
+                <option value="Vata-Kapha">Vata-Kapha</option>
+                <option value="Tridosha (balanced)">Tridosha (balanced)</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="tab-content" id="tab5">
+        <div class="form-group full-width">
+            <label>Nidan (Cause)</label>
+            <textarea name="nidan_cause" rows="2"></textarea>
+        </div>
+        <div class="form-group full-width">
+            <label>Purvarupa (Early Signs)</label>
+            <textarea name="nidan_early_signs" rows="2"></textarea>
+        </div>
+        <div class="form-group full-width">
+            <label>Rupa (Symptoms)</label>
+            <textarea name="nidan_symptoms" rows="2"></textarea>
+        </div>
+        <div class="form-group full-width">
+            <label>Examination Findings</label>
+            <textarea name="nidan_examination" rows="2" placeholder="Pulse (Nadi), tongue, other observations"></textarea>
+        </div>
+    </div>
+
+    <div class="tab-content" id="tab6">
+        <div class="form-group full-width">
+            <label>Final Diagnosis</label>
+            <textarea name="diagnosis" rows="3"></textarea>
+        </div>
+        <div class="form-group full-width">
+            <label>Additional Notes</label>
+            <textarea name="additional_notes" rows="3"></textarea>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Case Record</button>
+</form>
+
+<script>
+    const tabBtns = document.querySelectorAll(".tab-btn");
+    const tabContents = document.querySelectorAll(".tab-content");
+    tabBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+            tabBtns.forEach(b => b.classList.remove("active"));
+            tabContents.forEach(c => c.classList.remove("active"));
+            btn.classList.add("active");
+            document.getElementById(btn.dataset.tab).classList.add("active");
+        });
+    });
+</script>
+{% endblock %}

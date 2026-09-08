@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}New Patient{% endblock %}
+{% block content %}
+<h1>Register New Patient</h1>
+
+<form method="POST" class="form-card">
+    <div class="form-grid">
+        <div class="form-group">
+            <label>Full Name *</label>
+            <input type="text" name="name" required>
+        </div>
+        <div class="form-group">
+            <label>Age</label>
+            <input type="number" name="age" min="0" max="120">
+        </div>
+        <div class="form-group">
+            <label>Gender</label>
+            <select name="gender">
+                <option value="">Select</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Contact Number</label>
+            <input type="text" name="contact">
+        </div>
+        <div class="form-group">
+            <label>Set a 4-Digit PIN (optional, protects your records)</label>
+            <input type="password" name="patient_pin" maxlength="4" inputmode="numeric" pattern="[0-9]*">
+        </div>
+        <div class="form-group full-width">
+            <label>Address</label>
+            <textarea name="address" rows="2"></textarea>
+        </div>
+        <div class="form-group full-width">
+            <label>Emergency Contact</label>
+            <input type="text" name="emergency_contact">
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Save &amp; Generate Patient Code</button>
+</form>
+{% endblock %}

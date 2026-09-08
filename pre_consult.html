@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Pre-Consultation{% endblock %}
+{% block content %}
+
+<h1 style="font-size:20px; color:var(--navy);">Pre-Consultation Notes</h1>
+<p class="page-subtitle">Briefly describe your symptoms so your doctor can prepare before your next visit.</p>
+
+<form method="POST" class="form-card">
+    <div class="form-group full-width">
+        <label>What symptoms or concerns would you like to share?</label>
+        <textarea name="notes" rows="6" placeholder="e.g. I've had lower back pain for a week, worse in the mornings..." required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Share with My Doctor</button>
+</form>
+
+<a href="{{ url_for('patient_home', patient_code=patient['patient_code']) }}" class="btn btn-secondary" style="margin-top:12px; display:inline-block;">
+    Back to Home
+</a>
+{% endblock %}

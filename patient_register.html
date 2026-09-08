@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Patient Registration{% endblock %}
+{% block content %}
+<div class="login-wrap">
+    <div class="login-card" style="width:360px;">
+        <div class="login-logo">🧑</div>
+        <h1>Register as Patient</h1>
+        <p class="subtitle">Create your own Ayush Care profile</p>
+
+        <form method="POST" action="{{ url_for('patient_register') }}" style="text-align:left;">
+            <div class="form-group" style="margin-bottom:12px;">
+                <label>Full Name *</label>
+                <input type="text" name="name" required>
+            </div>
+            <div class="form-group" style="margin-bottom:12px;">
+                <label>Age</label>
+                <input type="number" name="age" min="0" max="120">
+            </div>
+            <div class="form-group" style="margin-bottom:12px;">
+                <label>Gender</label>
+                <select name="gender">
+                    <option value="">Select</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div class="form-group" style="margin-bottom:12px;">
+                <label>Mobile Number</label>
+                <input type="text" name="contact" placeholder="10 digit number">
+            </div>
+            <div class="form-group" style="margin-bottom:12px;">
+                <label>Address</label>
+                <textarea name="address" rows="2"></textarea>
+            </div>
+            <div class="form-group" style="margin-bottom:16px;">
+                <label>Set a 4-Digit PIN (recommended, protects your records)</label>
+                <input type="password" name="patient_pin" maxlength="4" inputmode="numeric" pattern="[0-9]*">
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%;">Register &amp; Get My Patient Code</button>
+        </form>
+        <p class="hint" style="margin-top:14px;">Already registered? <a href="{{ url_for('patient_login') }}">Login here</a></p>
+    </div>
+</div>
+{% endblock %}

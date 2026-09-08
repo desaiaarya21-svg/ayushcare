@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+
+<div class="welcome-banner">
+    <div class="greeting-label">Welcome back,</div>
+    <h1>{{ doctor_name }}</h1>
+    <div class="sub-line">{{ total_patients }} total patients &middot; {{ today_cases }} case(s) recorded today</div>
+</div>
+
+<div class="quick-grid">
+    <a href="{{ url_for('new_patient') }}" class="quick-tile tile-blue">
+        <div class="tile-icon">➕</div>
+        <div class="tile-title">Add Patient</div>
+        <div class="tile-sub">Register new patient</div>
+    </a>
+    <a href="{{ url_for('patient_list') }}" class="quick-tile tile-purple">
+        <div class="tile-icon">📋</div>
+        <div class="tile-title">All Patients</div>
+        <div class="tile-sub">Search &amp; view records</div>
+    </a>
+    <a href="{{ url_for('patient_list') }}" class="quick-tile tile-green">
+        <div class="tile-icon">📝</div>
+        <div class="tile-title">New Case</div>
+        <div class="tile-sub">Start case-taking</div>
+    </a>
+    <a href="{{ url_for('doctor_settings') }}" class="quick-tile tile-pink">
+        <div class="tile-icon">⚙️</div>
+        <div class="tile-title">Settings</div>
+        <div class="tile-sub">Profile &amp; PIN</div>
+    </a>
+</div>
+
+{% if pending_appointments %}
+<div class="queue-card">
+    <div class="queue-header">
+        <h3>Appointment Requests</h3>
+    </div>
+    {% for appt in pending_appointments %}
+    <div class="queue-row" style="cursor:default;">
+        <div class="queue-avatar">{{ appt['patient_name'][0] }}</div>
+        <div style="flex:1;">
+            <div class="queue-name">{{ appt['patient_name'] }} ({{ appt['patient_code'] }})</div>
+            <div class="queue-meta">Preferred: {{ appt['preferred_date'] }} &middot; {{ appt['reason'] }}</div>
+        </div>
+        <div style="display:flex; gap:6px;">
+            <form method="POST" action="{{ url_for('respond_to_appointment', req_id=appt['id'], action='confirm') }}">
+                <button type="submit" class="btn btn-primary" style="padding:6px 12px; font-size:11.5px;">Confirm</button>
+            </form>
+            <form method="POST" action="{{ url_for('respond_to_appointment', req_id=appt['id'], action='decline') }}">
+                <button type="submit" class="btn btn-secondary" style="padding:6px 12px; font-size:11.5px;">Decline</button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="queue-card">
+    <div class="queue-header">
+        <h3>Recently Added Patients</h3>
+        <a href="{{ url_for('patient_list') }}" style="font-size:12px; color:var(--teal); text-decoration:none;">View All</a>
+    </div>
+
+    {% if recent_patients %}
+        {% for patient in recent_patients %}
+        <a href="{{ url_for('patient_profile', patient_code=patient['patient_code']) }}" class="queue-row">
+            <div class="queue-avatar">{{ patient['name'][0] }}</div>
+            <div style="flex:1;">
+                <div class="queue-name">{{ patient['name'] }}</div>
+                <div class="queue-meta">{{ patient['patient_code'] }} &middot; {{ patient['age'] or '-' }} yrs</div>
+            </div>
+        </a>
+        {% endfor %}
+    {% else %}
+        <p class="empty-state">No patients yet. Add your first patient to get started.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

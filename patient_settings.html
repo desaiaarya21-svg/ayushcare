@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}My Profile{% endblock %}
+{% block content %}
+
+<h1 style="font-size:20px; color:var(--navy);">My Profile</h1>
+
+<div class="profile-card-top">
+    <div class="avatar-lg">{{ patient['name'][0] }}</div>
+    <div>
+        <div style="font-weight:700; font-size:15px;">{{ patient['name'] }}</div>
+        <div style="font-size:12.5px; color:#888;">{{ patient['patient_code'] }}</div>
+    </div>
+</div>
+
+<div class="settings-section-label">Personal Information</div>
+<div class="settings-list">
+    <div class="settings-item">
+        <div class="settings-title">Age</div>
+        <div class="settings-sub">{{ patient['age'] or '-' }}</div>
+    </div>
+    <div class="settings-item">
+        <div class="settings-title">Gender</div>
+        <div class="settings-sub">{{ patient['gender'] or '-' }}</div>
+    </div>
+    <div class="settings-item">
+        <div class="settings-title">Contact</div>
+        <div class="settings-sub">{{ patient['contact'] or '-' }}</div>
+    </div>
+    <div class="settings-item">
+        <div class="settings-title">Address</div>
+        <div class="settings-sub">{{ patient['address'] or '-' }}</div>
+    </div>
+</div>
+
+<div class="settings-section-label">Records</div>
+<div class="settings-list">
+    <div class="settings-item">
+        <div class="settings-title">Total Visit Records</div>
+        <div style="font-weight:700; color:var(--teal);">{{ record_count }}</div>
+    </div>
+</div>
+
+<p style="font-size:12px; color:#999; margin-top:6px;">
+    To update your personal details, please ask your doctor at your next visit —
+    only your doctor can edit registration information.
+</p>
+
+<a href="{{ url_for('index') }}" class="btn btn-secondary" style="width:100%; text-align:center; margin-top:10px;">
+    Logout
+</a>
+
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Settings{% endblock %}
+{% block content %}
+
+<h1 style="font-size:20px; color:var(--navy);">Settings &amp; Profile</h1>
+
+<div class="profile-card-top">
+    <div class="avatar-lg">{{ doctor['name'][0] }}</div>
+    <div>
+        <div style="font-weight:700; font-size:15px;">{{ doctor['name'] }}</div>
+        <div style="font-size:12.5px; color:#888;">PIN: &bull;&bull;&bull;&bull;</div>
+    </div>
+</div>
+
+<div class="settings-section-label">Practice Overview</div>
+<div class="settings-list">
+    <div class="settings-item">
+        <div>
+            <div class="settings-title">Total Patients</div>
+            <div class="settings-sub">Registered in the system</div>
+        </div>
+        <div style="font-weight:700; color:var(--teal);">{{ total_patients }}</div>
+    </div>
+    <div class="settings-item">
+        <div>
+            <div class="settings-title">Records You've Created</div>
+            <div class="settings-sub">Case-taking entries by you</div>
+        </div>
+        <div style="font-weight:700; color:var(--teal);">{{ total_records }}</div>
+    </div>
+</div>
+
+<div class="settings-section-label">Security</div>
+<div class="form-card" style="margin-bottom:16px;">
+    {% if error %}<div class="error-box">{{ error }}</div>{% endif %}
+    {% if success %}<div class="flash" style="margin-bottom:14px;">{{ success }}</div>{% endif %}
+    <form method="POST">
+        <div class="form-group" style="margin-bottom:12px;">
+            <label>New 4-Digit PIN</label>
+            <input type="password" name="new_pin" maxlength="4" inputmode="numeric" pattern="[0-9]*" required>
+        </div>
+        <div class="form-group" style="margin-bottom:14px;">
+            <label>Confirm New PIN</label>
+            <input type="password" name="confirm_pin" maxlength="4" inputmode="numeric" pattern="[0-9]*" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Update PIN</button>
+    </form>
+</div>
+
+<a href="{{ url_for('logout') }}" class="btn btn-secondary" style="width:100%; text-align:center; color:var(--danger);">
+    Logout
+</a>
+
+{% endblock %}

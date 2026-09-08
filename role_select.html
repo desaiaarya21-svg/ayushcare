@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Welcome{% endblock %}
+{% block content %}
+<div class="login-wrap">
+    <div class="login-card role-card">
+        <div class="login-logo">🌿</div>
+        <h1>Welcome to Ayush Care</h1>
+        <p class="subtitle">Your Gateway to Holistic Wellness</p>
+
+        <img src="https://source.unsplash.com/600x300/?doctors,clinic" alt="Ayush Care team"
+             style="width:100%; border-radius:12px; margin:14px 0 18px; display:block;">
+
+        <div class="role-buttons">
+            <a href="{{ url_for('patient_login') }}" class="btn btn-primary role-btn">
+                🧑 Continue as Patient
+            </a>
+            <a href="{{ url_for('login') }}" class="btn btn-secondary role-btn">
+                👨‍⚕️ Continue as Doctor
+            </a>
+        </div>
+        <p class="hint">New patient? <a href="{{ url_for('patient_register') }}">Register Now</a></p>
+        <p class="hint" style="margin-top:16px; color:#bbb;">MINISTRY OF AYUSH</p>
+    </div>
+</div>
+{% endblock %}
